@@ -1,0 +1,42 @@
+<odoo>
+
+  <!-- Membuat Menu Dashboard -->
+
+  <menuitem id="menu_dashboard_travel_umroh" name="Travel Umroh" web_icon="ab_travel_umroh,static/description/icon.png"/>
+
+  <!-- Membuat Menu Bar Master data -->
+
+  <menuitem id="menu_bar_travel_umroh" name="Master Data" parent="menu_dashboard_travel_umroh"/>
+
+  <!-- Membuat Menu Item Product -->
+
+  <menuitem id="menu_item_training_course" name="Produk" parent="menu_bar_travel_umroh" action="produk_umroh_action"/>
+
+  <!-- Membuat Menu Item Paket Produk -->
+
+  <menuitem id="menu_item_paket_produk" name="Paket Produk" parent="menu_bar_travel_umroh" action="paket_produk_action"/>
+
+  <!-- Membuat Menu Item Jamaah -->
+
+  <menuitem id="menu_item_jamaah" name="Jamaah" parent="menu_bar_travel_umroh" action="jamaah_umroh_action"/>
+
+  <!-- Membuat Menu Item Airlines -->
+
+  <menuitem id="menu_item_airlines" name="Airlines" parent="menu_bar_travel_umroh" action="airlines_action"/>
+
+  <!-- Membuat Menu Item Hotel -->
+
+  <menuitem id="menu_item_hotels" name="Hotels" parent="menu_bar_travel_umroh" action="hotels_action"/>
+
+  <!-- another menu -->
+
+  <!-- Membuat Menu Bar Transaction -->
+
+  <menuitem id="menu_bar_transaction" name="Transaction" parent="menu_dashboard_travel_umroh"/>
+
+  <!-- Membuat Menu Item Travel Package -->
+
+  <menuitem id="menu_item_travel_package" name="Travel Package" parent="menu_bar_transaction" action="travel_package_action"/>
+
+
+</odoo>

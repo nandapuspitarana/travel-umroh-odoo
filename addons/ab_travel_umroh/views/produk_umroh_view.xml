@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="sale.product_template_action" model="ir.actions.act_window">
+    <field name="name">Product</field>
+  </record>
+
+  <record id="produk_umroh_action" model="ir.actions.act_window">
+    <field name="name">Produk</field>
+    <field name="view_mode">kanban,tree,form,activity</field>
+  </record>
+
+</odoo>

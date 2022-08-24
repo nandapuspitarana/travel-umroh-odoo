@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <record id="hotels_view_form" model="ir.ui.view">
+      <field name="name">hotels.view.form</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_res_partner_filter"/>
+      <field name="arch" type="xml">
+        <filter name="type_person" position="before">
+          <filter name="hotels" string="Hotel" />
+        </filter>
+      </field>
+    </record>
+
+    <record id="hotels_action" model="ir.actions.act_window">
+      <field name="name">Hotel</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="domain">[('hotels', '=', 1)]</field>
+      <field name="context">{'search_default_hotels':1,'default_hotels':1,'default_company_type':'company'}</field>
+    </record>
+
+  </data>
+</odoo>

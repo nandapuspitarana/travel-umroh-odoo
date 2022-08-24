@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <data>
+
+    <record id="jamaah_umroh_view_form" model="ir.ui.view">
+      <field name="name">jamaah.umroh.view.form</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+
+        <xpath expr="//form/sheet/group" position="after">
+          <group col="4" string="Additional Information">
+            <field name="nomor_ktp" />
+            <field name="jenis_kelamin" />
+            <field name="nama_ayah" />
+            <field name="nama_ibu" />
+            <field name="pekerjaan_ayah" />
+            <field name="pekerjaan_ibu" />
+            <field name="tempat_lahir" />
+            <field name="tanggal_lahir" />
+            <field name="pendidikan" />
+            <field name="golongan_darah" />
+            <field name="status_hubungan" />
+            <field name="ukuran_baju" />
+          </group>
+          <group col="4" string="Data Pribadi">
+            <field name="no_paspor" />
+            <field name="nama_paspor" />
+            <field name="tanggal_berlaku" />
+            <field name="tanggal_expired" />
+            <field name="imigrasi" />
+            <field name="umur" />
+          </group>
+          <group col="4" string="Scan Document">
+            <field name="scan_paspor" />
+            <field name="scan_buku_nikah" />
+            <field name="scan_ktp" />
+            <field name="scan_kk" />
+          </group>
+        </xpath>
+
+        <xpath expr="//form/sheet/notebook/page[@name='sales_purchases']/group" position="after">
+          <group string="Travel">
+            <field name="hotels" />
+            <field name="airlines" />
+          </group>
+        </xpath>
+
+      </field>
+    </record>
+
+    <record id="jamaah_umroh_action" model="ir.actions.act_window">
+      <field name="name">Jamaah</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+  </data>
+
+
+</odoo>

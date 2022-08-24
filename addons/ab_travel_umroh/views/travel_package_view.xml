@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="travel_package_view_form" model="ir.ui.view">
+    <field name="name">travel.package.view.form</field>
+    <field name="model">travel.package</field>
+    <field name="arch" type="xml">
+
+      <form string="Travel Package Form">
+        <header>
+          <button name="action_confirm" type="object" string="Confirm" states="draft" class="btn-primary"/>
+          <button name="action_cancel_confirm" type="object" string="Cancel" states="confirm"/>
+          <button name="action_close" type="object" string="Close" states="confirm" class="oe_highlight"/>
+          <!-- <button name="action_update_jamaah" type="object" string="Update Jamaah" states="confirm" class="oe_highlight"/> -->
+          <!-- <button name="action_cetak_manifest" type="object" string="Cetak Manifest" states="confirm"/> -->
+          <button name="action_cancel_close" type="object" string="Cancel" states="done"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="ref"/>
+            </h1>
+          </div>
+          <group string="Informasi Jadwal" col="4">
+            <field name="tanggal_berangkat" />
+            <field name="tanggal_kembali" />
+          </group>
+          <group string="Produk" col="4">
+            <field name="product_id" />
+            <field name="package_id" />
+          </group>
+          <group string="Seats" col="4">
+            <field name="quota" />
+            <field name="remaining_quota" readonly="1"/>
+            <field name="quota_progress" widget="progressbar" optional="hide"/>
+          </group>
+          <notebook>
+            <page string="Hotel Lines">
+              <group>
+                <field name="hotel_lines" mode="tree,kanban" nolabel="1">
+                  <tree string="Hotel Lines" editable="top">
+                    <field name="partner_id"/>
+                    <field name="check_in"/>
+                    <field name="check_out"/>
+                    <field name="city"/>
+                  </tree>
+                  <form string='Hotel Lines'>
+                    <group>
+                      <field name="partner_id"/>
+                      <field name="check_in"/>
+                      <field name="check_out"/>
+                      <field name="city"/>
+                    </group>
+                  </form>
+                </field>
+              </group>
+            </page>
+            <page string="Airline Lines">
+              <group>
+                <field name="airline_lines" mode="tree" nolabel="1">
+                  <tree string="Airline Lines" editable="top">
+                    <field name="partner_id"/>
+                    <field name="tanggal_berangkat"/>
+                    <field name="kota_asal"/>
+                    <field name="kota_tujuan"/>
+                  </tree>
+                </field>
+              </group>
+            </page>
+            <page string="Schedule Lines">
+              <group>
+                <field name="scedule_lines" mode="tree" nolabel="1">
+                  <tree string="Schedule Lines" editable="top">
+                    <field name="kegiatan"/>
+                    <field name="tanggal_kegiatan"/>
+                  </tree>
+                </field>
+              </group>
+            </page>
+            <page string="Manifest">
+              <group>
+                <field name="manifest_lines" mode="tree" nolabel="1" readonly="1">
+                  <tree string="Manifest">
+                    <field name="title"/>
+                    <field name="nama_paspor"/>
+                    <field name="jenis_kelamin"/>
+                    <field name="nomor_ktp"/>
+                    <field name="tanggal_lahir"/>
+                    <field name="tempat_lahir"/>
+                    <field name="tanggal_berlaku"/>
+                    <field name="tanggal_expired"/>
+                    <field name="imigrasi"/>
+                    <field name="umur" />
+                  </tree>
+                </field>
+              </group>
+            </page>
+            <page string="HPP Lines">
+              <group>
+                <field name="hpp_lines" nolabel="1">
+                  <tree string="Hpp Line" editable="top">
+                    <field name="product_id" />
+                    <field name="quantity" />
+                    <field name="unit_id" />
+                    <field name="unitprice" />
+                    <field name="subtotal" />
+                  </tree>
+                </field>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="travel_package_action" model="ir.actions.act_window">
+    <field name="name">Travel Package</field>
+    <field name="res_model">travel.package</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+</odoo>

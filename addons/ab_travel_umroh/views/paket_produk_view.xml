@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="mrp.mrp_bom_form_action" model="ir.actions.act_window">
+    <field name="name">Bills of Materials</field>
+  </record>
+
+  <record id="paket_produk_action" model="ir.actions.act_window">
+    <field name="name">Paket Produk</field>
+  </record>
+
+</odoo>
