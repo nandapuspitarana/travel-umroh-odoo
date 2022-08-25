@@ -6,6 +6,7 @@ class TravelPackage(models.Model):
     _name = "travel.package"
     _description = "Paket Travel Umroh"
 
+    # generate sequence referensi berdasarkan sequence_data.xml
     ref = fields.Char(string='Referensi', readonly=True, default='-')
     tanggal_berangkat = fields.Date('Tanggal Berangkat')
     tanggal_kembali = fields.Date('Tanggal Kembali')
@@ -17,22 +18,6 @@ class TravelPackage(models.Model):
     quota = fields.Integer('Quota')
     remaining_quota = fields.Integer('Remaining Quota')
     quota_progress = fields.Float('Quota Progress')
-
-    # header button
-    state = fields.Selection([('draft', 'Draft'), ('confirm', 'Confirm'), (
-        'done', 'Done')], string='Status', readonly=True, default='draft')
-
-    def action_confirm(self):
-        self.write({'state': 'confirm'})
-
-    def action_cancel_confirm(self):
-        self.write({'state': 'draft'})
-
-    def action_close(self):
-        self.write({'state': 'done'})
-
-    def action_cancel_close(self):
-        self.write({'state': 'confirm'})
 
     # notebook
     # hotel lines
@@ -53,6 +38,34 @@ class TravelPackage(models.Model):
     # hpp
     hpp_lines = fields.One2many('hpp.line', 'travel_id', string='hpp')
 
+    # total cost
+    total_cost = fields.Float(
+        compute='_compute_total_cost', string='Total Cost')
+
+    # header button
+    state = fields.Selection([('draft', 'Draft'), ('confirm', 'Confirm'), (
+        'done', 'Done')], string='Status', readonly=True, default='draft')
+
+    def action_confirm(self):
+        self.write({'state': 'confirm'})
+
+    def action_cancel_confirm(self):
+        self.write({'state': 'draft'})
+
+    def action_close(self):
+        self.write({'state': 'done'})
+
+    def action_cancel_close(self):
+        self.write({'state': 'confirm'})
+
+    # generate sequence referensi berdasarkan sequence_data.xml
+    @api.model
+    def create(self, vals):
+        _logger = logging.getLogger("=======create========")
+        vals['ref'] = self.env['ir.sequence'].next_by_code('travel.package')
+        _logger.warning(msg=super(TravelPackage, self).create(vals))
+        return super(TravelPackage, self).create(vals)
+
     @api.onchange('package_id')
     def _onchange_package_id(self):
 
@@ -69,6 +82,14 @@ class TravelPackage(models.Model):
 
                 isipaket.append((0, 0, komponen))
             paket.hpp_lines = isipaket
+
+    @api.depends('hpp_lines')
+    def _compute_total_cost(self):
+        for total in self:
+            totals = 0
+            for reg in self.hpp_lines:
+                totals += reg.subtotal
+            total.total_cost = totals
 
 
 class HotelLine(models.Model):
@@ -132,10 +153,7 @@ class HPPLine(models.Model):
 
     @api.depends('quantity', 'unitprice')
     def _compute_subtotal(self):
-        _logger = logging.getLogger("===============")
-
         for price in self:
             price.subtotal = 0
             if price.quantity > 0 and price.unitprice > 0:
                 price.subtotal = price.quantity * price.unitprice
-                _logger.warning(msg=price.subtotal)

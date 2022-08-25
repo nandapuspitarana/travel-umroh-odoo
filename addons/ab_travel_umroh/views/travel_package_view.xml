@@ -108,8 +108,13 @@
                   </tree>
                 </field>
               </group>
+              <div style="float: right;">
+                <label for="total_cost"/>
+                <field name="total_cost" sum="total_cost"/>
+              </div>
             </page>
           </notebook>
+
         </sheet>
       </form>
     </field>

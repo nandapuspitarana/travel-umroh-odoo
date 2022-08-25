@@ -20,12 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'product'],
+    'depends': ['base', 'product', 'sale'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/travel_package_view.xml',
+        'views/sequence_data.xml',
         'views/paket_produk_view.xml',
         'views/produk_umroh_view.xml',
         'views/hotels_view.xml',
