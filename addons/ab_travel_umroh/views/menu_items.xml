@@ -38,5 +38,9 @@
 
   <menuitem id="menu_item_travel_package" name="Travel Package" parent="menu_bar_transaction" action="travel_package_action"/>
 
+  <!-- Membuat Menu Item Sale Order -->
+
+  <menuitem id="menu_item_sale_order" name="Sale Order" parent="menu_bar_transaction" action="sale.action_orders"/>
+
 
 </odoo>

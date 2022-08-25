@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+  <!-- Membuat View Tree/List Travel Package -->
+
+  <record id="travel_package_view_tree" model="ir.ui.view">
+    <field name="name">travel.package.tree</field>
+    <field name="model">travel.package</field>
+    <field name="arch" type="xml">
+      <tree string="Travel Package List">
+        <field name="ref"/>
+        <field name="product_id"/>
+        <field name="package_id"/>
+        <field name="tanggal_berangkat"/>
+        <field name="tanggal_kembali"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- Membuat View Form Travel Package -->
+
   <record id="travel_package_view_form" model="ir.ui.view">
     <field name="name">travel.package.view.form</field>
     <field name="model">travel.package</field>
@@ -70,7 +88,7 @@
             </page>
             <page string="Schedule Lines">
               <group>
-                <field name="scedule_lines" mode="tree" nolabel="1">
+                <field name="schedule_lines" mode="tree" nolabel="1">
                   <tree string="Schedule Lines" editable="top">
                     <field name="kegiatan"/>
                     <field name="tanggal_kegiatan"/>
@@ -119,6 +137,8 @@
       </form>
     </field>
   </record>
+
+  <!-- Membuat action Travel Package -->
 
   <record id="travel_package_action" model="ir.actions.act_window">
     <field name="name">Travel Package</field>

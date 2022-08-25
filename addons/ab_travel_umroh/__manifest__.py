@@ -25,6 +25,7 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'views/sale_order_view.xml',
         'views/travel_package_view.xml',
         'views/sequence_data.xml',
         'views/paket_produk_view.xml',

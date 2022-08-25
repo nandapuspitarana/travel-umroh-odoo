@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_order_form_inherit_sale_order" model="ir.ui.view">
+    <field name="name">sale.order.view.form.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+      <field name="partner_id" position="after">
+        <field name="package_id" />
+      </field>
+
+      <notebook position="inside">
+        <page string="Manifest">
+          <group>
+            <field name="manifest_sale_order_lines" mode="tree,kanban" nolabel="1">
+              <tree string="Sesi">
+                <field name="title"/>
+                <field name="nama_paspor"/>
+                <field name="jenis_kelamin"/>
+                <field name="nomor_ktp"/>
+                <field name="tanggal_lahir"/>
+                <field name="tempat_lahir"/>
+                <field name="tanggal_berlaku"/>
+                <field name="tanggal_expired"/>
+                <field name="tipe_kamar"/>
+                <field name="umur" />
+              </tree>
+              <form string='Manifest'>
+                <group string="Personal">
+                  <group>
+                    <field name="title"/>
+                    <field name="partner_id"/>
+                    <field name="tipe_kamar"/>
+                    <field name="tanggal_lahir"/>
+                  </group>
+                  <group>
+                    <field name="nomor_ktp"/>
+                    <field name="mahrom_id"/>
+                    <field name="umur" />
+                    <field name="tempat_lahir"/>
+                  </group>
+                </group>
+                <group string="Passport">
+                  <group>
+                    <field name="no_paspor"/>
+                    <field name="tanggal_berlaku"/>
+                    <field name="imigrasi"/>
+                  </group>
+                  <group>
+                    <field name="nama_paspor"/>
+                    <field name="tanggal_expired"/>
+                  </group>
+                </group>
+                <group string="Scan Dokumen">
+                  <group>
+                    <field name="scan_paspor" widget="image"/>
+                    <field name="scan_ktp" widget="image"/>
+                  </group>
+                  <group>
+                    <field name="scan_buku_nikah" widget="image"/>
+                    <field name="scan_kk" widget="image"/>
+                  </group>
+                </group>
+              </form>
+            </field>
+          </group>
+        </page>
+      </notebook>
+    </field>
+  </record>
+
+
+</odoo>

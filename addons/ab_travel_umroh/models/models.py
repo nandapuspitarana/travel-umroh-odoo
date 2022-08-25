@@ -8,28 +8,34 @@ class TravelPackage(models.Model):
 
     # generate sequence referensi berdasarkan sequence_data.xml
     ref = fields.Char(string='Referensi', readonly=True, default='-')
-    tanggal_berangkat = fields.Date('Tanggal Berangkat')
-    tanggal_kembali = fields.Date('Tanggal Kembali')
 
-    product_id = fields.Many2one('product.product', string='Sale', domain=[
+    tanggal_berangkat = fields.Date('Tanggal Berangkat', required=True)
+    tanggal_kembali = fields.Date('Tanggal Kembali', required=True)
+
+    # untuk manmpilkan produk yang akan di ambil
+    # ini juga generate name travel package berdasarkan dep sale
+    product_id = fields.Many2one('product.product', required=True, string='Sale', domain=[
                                  ('type', '=', "service")])
-    package_id = fields.Many2one('product.product', string='Package')
 
-    quota = fields.Integer('Quota')
+    package_id = fields.Many2one(
+        'product.product', required=True, string='Package')
+
+    quota = fields.Integer('Quota', required=True)
     remaining_quota = fields.Integer('Remaining Quota')
     quota_progress = fields.Float('Quota Progress')
 
     # notebook
     # hotel lines
-    hotel_lines = fields.One2many('hotel.line', 'hotel_id', 'Nama Hotel')
+    hotel_lines = fields.One2many(
+        'hotel.line', 'hotel_id', 'Nama Hotel', required=True)
 
     # airlines
     airline_lines = fields.One2many(
-        'airline.line', 'airline_id', 'Nama Airline')
+        'airline.line', 'airline_id', 'Nama Airline', required=True)
 
     # scheduled
-    scedule_lines = fields.One2many(
-        'scedule.line', 'scedule_id', 'Nama Kegiatan')
+    schedule_lines = fields.One2many(
+        'scedule.line', 'scedule_id', 'Nama Kegiatan', required=True)
 
     # manifest
     manifest_lines = fields.One2many(
@@ -58,12 +64,18 @@ class TravelPackage(models.Model):
     def action_cancel_close(self):
         self.write({'state': 'confirm'})
 
+    # generate name travel package berdasarkan dep sale
+    def name_get(self):
+        result = []
+        for ab in self:
+            ref = ab.ref + ' - ' + ab.product_id.name
+            result.append((ab.id, ref))
+        return result
+
     # generate sequence referensi berdasarkan sequence_data.xml
     @api.model
     def create(self, vals):
-        _logger = logging.getLogger("=======create========")
         vals['ref'] = self.env['ir.sequence'].next_by_code('travel.package')
-        _logger.warning(msg=super(TravelPackage, self).create(vals))
         return super(TravelPackage, self).create(vals)
 
     @api.onchange('package_id')
@@ -90,6 +102,12 @@ class TravelPackage(models.Model):
             for reg in self.hpp_lines:
                 totals += reg.subtotal
             total.total_cost = totals
+
+    @api.onchange('quota')
+    def onchange_quota(self):
+        self.remaining_quota = self.quota - len(self.manifest_lines)
+        if self.quota and self.manifest_lines:
+            self.quota_progress = 100 * len(self.manifest_lines) / self.quota
 
 
 class HotelLine(models.Model):
