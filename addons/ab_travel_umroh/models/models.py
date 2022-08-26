@@ -73,23 +73,7 @@ class TravelPackage(models.Model):
                 for manifestjamaah in line.manifest_sale_order_lines:
                     val = {
                         'partner_id': manifestjamaah.partner_id.id,
-                        # 'tipe_kamar': a.tipe_kamar,
-                        # 'umur': a.umur,
-                        # 'mahrom': a.mahrom.id
-
-                        # 'title': line.partner_id.title.name,
-                        # 'nama_paspor': line.partner_id.nama_paspor,
-                        # 'jenis_kelamin': line.partner_id.jenis_kelamin,
-                        # 'no_ktp': line.partner_id.no_ktp,
-                        # 'no_paspor': line.partner_id.no_paspor,
-                        # 'tanggal_lahir': line.partner_id.tanggal_lahir,
-                        # 'tempat_lahir': line.partner_id.tempat_lahir,
-                        # 'tanggal_berlaku': line.partner_id.tanggal_berlaku,
-                        # 'tanggal_expired': line.partner_id.tanggal_expired,
-                        # 'imigrasi': line.partner_id.imigrasi,
-                        # 'tipe_kamar': line.tipe_kamar,
-                        # 'umur': line.umur,
-                        # 'mahrom': line.mahrom.id
+                        'tipe_kamar': manifestjamaah.tipe_kamar
                     }
                     lines.append((0, 0, val))
                 rec.manifest_lines = lines
@@ -152,6 +136,9 @@ class TravelPackage(models.Model):
         if self.quota and self.manifest_lines:
             self.quota_progress = 100 * len(self.manifest_lines) / self.quota
 
+    def action_cetak_manifest(self):
+        return self.env.ref('ab_travel_umroh.report_manifest_xlsx_action').report_action(self)
+
 
 class HotelLine(models.Model):
     _name = 'hotel.line'
@@ -200,7 +187,6 @@ class ManifestLine(models.Model):
         'travel.package', 'Manifest Reference')
     partner_id = fields.Many2one(
         'res.partner', string='', delegate=True)
-
     tipe_kamar = fields.Selection([
         ('double', 'Double'), ('triple', 'Triple'), ('quad', 'Quad')
     ], string='Tipe Kamar')
