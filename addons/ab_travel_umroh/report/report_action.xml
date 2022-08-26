@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="report_manifest_xlsx_action" model="ir.actions.report">
+    <field name="name">Manifest (XLSX)</field>
+    <field name="model">travel.package</field>
+    <field name="report_type">xlsx</field>
+    <field name="report_name">ab_travel_umroh.report_manifest_xlsx</field>
+    <field name="report_file">ab_travel_umroh.report_manifest_xlsx</field>
+    <field name="print_report_name">'Manifest'</field>
+    <field name="binding_model_id" ref="model_travel_package"/>
+    <field name="binding_view_types">form,list</field>
+  </record>
+
+</odoo>

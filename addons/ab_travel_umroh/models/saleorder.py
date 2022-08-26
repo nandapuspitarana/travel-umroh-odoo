@@ -41,4 +41,4 @@ class ManifestSaleOrderLine(models.Model):
         ('double', 'Double'), ('triple', 'Triple'), ('quad', 'Quad')
     ], string='Tipe Kamar')
 
-    mahrom_id = fields.Many2one('res.partner', string='Mahrom')
+    # mahrom_id = fields.Many2one('res.partner', string='Mahrom')

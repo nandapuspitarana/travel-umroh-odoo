@@ -201,6 +201,10 @@ class ManifestLine(models.Model):
     partner_id = fields.Many2one(
         'res.partner', string='', delegate=True)
 
+    tipe_kamar = fields.Selection([
+        ('double', 'Double'), ('triple', 'Triple'), ('quad', 'Quad')
+    ], string='Tipe Kamar')
+
 
 class HPPLine(models.Model):
     _name = 'hpp.line'

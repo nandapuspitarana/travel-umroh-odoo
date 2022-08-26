@@ -110,6 +110,8 @@
                     <field name="tanggal_expired"/>
                     <field name="imigrasi"/>
                     <field name="umur" />
+                    <field name="mahrom_id" />
+                    <field name="tipe_kamar" />
                   </tree>
                 </field>
               </group>

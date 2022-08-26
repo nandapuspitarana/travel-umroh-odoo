@@ -43,6 +43,7 @@ class ResPartner(models.Model):
 
     # additional manifest
     umur = fields.Char(compute='_compute_umur', string='Umur')
+    mahrom_id = fields.Many2one('res.partner', string='Mahrom')
 
     @api.depends('tanggal_lahir')
     def _compute_umur(self):

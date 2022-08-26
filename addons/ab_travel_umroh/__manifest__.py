@@ -20,11 +20,12 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'product', 'sale'],
+    'depends': ['base', 'product', 'sale', 'report_xlsx'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        # 'report/report_action.xml',
         'views/sale_order_view.xml',
         'views/travel_package_view.xml',
         'views/sequence_data.xml',
