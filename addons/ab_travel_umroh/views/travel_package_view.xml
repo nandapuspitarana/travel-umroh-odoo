@@ -30,7 +30,7 @@
           <button name="action_cancel_confirm" type="object" string="Set to Draft" states="confirm"/>
           <button name="action_close" type="object" string="Done" states="confirm" class="oe_highlight"/>
           <button name="action_update_jamaah" type="object" string="Update Jamaah" states="confirm" class="oe_highlight"/>
-          <!-- <button name="action_cetak_manifest" type="object" string="Cetak Manifest" states="confirm"/> -->
+          <button name="action_cetak_manifest" type="object" string="Cetak Manifest" states="confirm"/>
           <button name="action_cancel_close" type="object" string="Cancel" states="done"/>
           <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
         </header>
