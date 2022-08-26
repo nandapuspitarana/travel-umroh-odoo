@@ -1,6 +1,8 @@
 import logging
 from odoo import models, fields, api
 
+_logger = logging.getLogger("====models====")
+
 
 class TravelPackage(models.Model):
     _name = "travel.package"
@@ -52,6 +54,47 @@ class TravelPackage(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('confirm', 'Confirm'), (
         'done', 'Done')], string='Status', readonly=True, default='draft')
 
+    # update jamaah
+    order_id = fields.One2many('sale.order', 'package_id', 'Order', domain=[
+                               ('state', 'ilike', 'sale')])
+
+    # update jamaah
+    def action_update_jamaah(self):
+        self.remaining_quota = self.quota - \
+            len(self.order_id.manifest_sale_order_lines)
+        self.quota_progress = 100 * \
+            len(self.order_id.manifest_sale_order_lines) / self.quota
+        for rec in self:
+            lines = [(5, 0, 0)]
+            env = self.env['sale.order'].search(
+                [('package_id', '=', self.id), ('state', '=', 'sale')])
+            for line in env:
+                _logger.warning(line.manifest_sale_order_lines)
+                for manifestjamaah in line.manifest_sale_order_lines:
+                    val = {
+                        'partner_id': manifestjamaah.partner_id.id,
+                        # 'tipe_kamar': a.tipe_kamar,
+                        # 'umur': a.umur,
+                        # 'mahrom': a.mahrom.id
+
+                        # 'title': line.partner_id.title.name,
+                        # 'nama_paspor': line.partner_id.nama_paspor,
+                        # 'jenis_kelamin': line.partner_id.jenis_kelamin,
+                        # 'no_ktp': line.partner_id.no_ktp,
+                        # 'no_paspor': line.partner_id.no_paspor,
+                        # 'tanggal_lahir': line.partner_id.tanggal_lahir,
+                        # 'tempat_lahir': line.partner_id.tempat_lahir,
+                        # 'tanggal_berlaku': line.partner_id.tanggal_berlaku,
+                        # 'tanggal_expired': line.partner_id.tanggal_expired,
+                        # 'imigrasi': line.partner_id.imigrasi,
+                        # 'tipe_kamar': line.tipe_kamar,
+                        # 'umur': line.umur,
+                        # 'mahrom': line.mahrom.id
+                    }
+                    lines.append((0, 0, val))
+                rec.manifest_lines = lines
+
+    # header button
     def action_confirm(self):
         self.write({'state': 'confirm'})
 
