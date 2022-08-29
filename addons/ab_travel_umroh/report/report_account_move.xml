@@ -1,0 +1,142 @@
+<odoo>
+
+
+  <template id="body_cetak_invoice">
+    <div class="page">
+      <div style="font-size:23px;font-weight:bold;text-align:center;margin-bottom:20px;">CUSTOMER INVOICE</div>
+      <div class="d-flex justify-content-center">
+        <table class="table table-bordered" style="width:50%;margin:10px;">
+          <tbody>
+            <tr>
+              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">Customer</td>
+              <td style="width:75%;padding:5px;">
+                <t t-esc="o.partner_id.name"/>
+              </td>
+            </tr>
+            <tr>
+              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">Address</td>
+              <td style="width:75%;padding:5px;">
+                <t t-esc="o.partner_id.city"/>
+              </td>
+            </tr>
+            <tr>
+              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">Mobile</td>
+              <td style="width:75%;padding:5px;">
+                <t t-esc="o.partner_id.mobile"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered" style="width:50%;margin:10px;">
+          <tbody>
+            <tr>
+              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">No</td>
+              <td style="width:75%;padding:5px;">
+                <t t-esc="o.payment_reference"/>
+              </td>
+            </tr>
+            <tr>
+              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">Tanggal</td>
+              <td style="width:75%;padding:5px;">
+                <t t-if="o.invoice_date">
+                  <t t-esc="o.invoice_date.strftime('%d %B %Y')"/>
+                </t>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <table class="table table-bordered mt-4">
+        <thead style="background-color:#28A27E;color:white;font-weight: bold;font-weight: bold;">
+          <tr>
+            <td class="text-center">Product</td>
+            <td class="text-center">Qty</td>
+            <td class="text-center">Price Unit</td>
+            <td class="text-center">Subtotal</td>
+          </tr>
+        </thead>
+        <tbody>
+          <t t-foreach="o.invoice_line_ids" t-as="move">
+            <tr>
+              <td class="text-center">
+                <t t-esc="move.product_id.name"/>
+              </td>
+              <td class="text-right">
+                <t t-esc="move.quantity"/>
+              </td>
+              <td class="text-right">
+                <t t-esc="move.price_unit"/>
+              </td>
+              <td class="text-right">
+                <t t-esc="move.price_subtotal"/>
+              </td>
+            </tr>
+          </t>
+          <tr>
+            <td colspan="3" style="text-align:right;font-weight:bold;">Total</td>
+            <td style="text-align:right;font-weight:bold;">
+              <t t-esc="o.amount_total"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-bordered mt-4">
+        <thead style="background-color:#28A27E;color:white;font-weight: bold;font-weight: bold;">
+          <tr>
+            <td class="text-center">Method</td>
+            <td class="text-center">Tanggal</td>
+            <td class="text-center">Amount</td>
+          </tr>
+        </thead>
+        <tbody>
+          <t t-set="payments_vals" t-value="o.sudo()._get_reconciled_info_JSON_values()"/>
+          <t t-foreach="payments_vals" t-as="payment">
+            <tr>
+              <td class="text-center">
+                <t t-esc="payment['journal_name']"/>
+              </td>
+              <td class="text-center">
+                <t t-esc="payment['date']">
+                  <t t-esc="payment['date'].strftime('%d %B %Y')"/>
+                </t>
+              </td>
+              <td class="text-right">
+                <t t-esc="payment['amount']"/>
+              </td>
+            </tr>
+          </t>
+          <tr>
+            <td colspan="2" style="text-align:right;font-weight:bold;">Sisa</td>
+            <td style="text-align:right;font-weight:bold;">
+              <t t-esc="o.amount_residual"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="border:2px solid black;width:34%;margin-left:33%">
+        <div style="margin-bottom:150px;text-align:center;">Finance</div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Report Template - Session -->
+
+  <template id="report_cetak_invoice">
+    <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="o">
+        <div t-if="report_type == 'html'">
+          <div>
+            <t t-call="ab_travel_umroh.body_cetak_invoice"/>
+          </div>
+        </div>
+        <div t-else="">
+          <t t-call="web.external_layout">
+            <t t-call="ab_travel_umroh.body_cetak_invoice"/>
+          </t>
+        </div>
+      </t>
+    </t>
+  </template>
+
+
+</odoo>

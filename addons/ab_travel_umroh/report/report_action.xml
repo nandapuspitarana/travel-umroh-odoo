@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+  <!-- print xls manifest jamaah melalui model-->
   <record id="report_manifest_xlsx_action" model="ir.actions.report">
     <field name="name">Manifest (XLSX)</field>
     <field name="model">travel.package</field>
@@ -11,5 +12,29 @@
     <field name="binding_model_id" ref="model_travel_package"/>
     <field name="binding_view_types">form,list</field>
   </record>
+
+  <!-- print sale order barang dikirim melalui view -->
+  <record id="report_stock_delivery_action" model="ir.actions.report">
+    <field name="name">Print Delivery</field>
+    <field name="model">stock.picking</field>
+    <field name="report_type">qweb-html</field>
+    <field name="report_name">ab_travel_umroh.report_stock_delivery</field>
+    <field name="report_file">ab_travel_umroh.report_stock_delivery</field>
+    <field name="print_report_name">'Delivery - %s' % (object.name)</field>
+    <field name="binding_model_id" ref="model_stock_picking"/>
+    <field name="binding_view_types">form,list</field>
+  </record>
+
+  <!-- print cetak invoice barang dikirim melalui view -->
+  <record id="report_cetak_invoice_action" model="ir.actions.report">
+        <field name="name">Cetak Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">ab_travel_umroh.report_cetak_invoice</field>
+        <field name="report_file">ab_travel_umroh.report_cetak_invoice</field>
+        <field name="print_report_name">'Delivery - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_view_types">form,list</field>
+    </record>
 
 </odoo>

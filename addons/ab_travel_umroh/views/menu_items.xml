@@ -42,5 +42,8 @@
 
   <menuitem id="menu_item_sale_order" name="Sale Order" parent="menu_bar_transaction" action="sale.action_orders"/>
 
+  <!-- Membuat Menu Item Customer Invoice -->
+  <menuitem id="menu_item_customer_invoice" name="Customer Invoice" parent="menu_bar_transaction" action="account.action_move_out_invoice_type"/>
+
 
 </odoo>
