@@ -89,19 +89,16 @@
           </tr>
         </thead>
         <tbody>
-          <t t-set="payments_vals" t-value="o.sudo()._get_reconciled_info_JSON_values()"/>
-          <t t-foreach="payments_vals" t-as="payment">
-            <tr>
-              <td class="text-center">
-                <t t-esc="payment['journal_name']"/>
+          <t t-foreach="o.get_widget()" t-as="pay">
+            <tr style="height: 18px;">
+              <td style="width: 33.3333%; text-align: center; height: 18px;">
+                <span t-esc="pay['journal_name']"/>
               </td>
-              <td class="text-center">
-                <t t-esc="payment['date']">
-                  <t t-esc="payment['date'].strftime('%d %B %Y')"/>
-                </t>
+              <td style="width: 33.3333%; text-align: center; height: 18px;">
+                <span t-esc="time.strftime('%d %B %Y',time.strptime(pay['date'],'%Y-%m-%d'))"/>
               </td>
-              <td class="text-right">
-                <t t-esc="payment['amount']"/>
+              <td style="width: 33.3333%; height: 18px; text-align: right;">
+                <span t-esc="pay['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
               </td>
             </tr>
           </t>
