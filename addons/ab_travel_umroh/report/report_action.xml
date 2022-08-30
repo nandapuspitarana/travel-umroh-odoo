@@ -30,7 +30,7 @@
         <field name="name">Cetak Invoice</field>
         <field name="model">account.move</field>
         <field name="report_type">qweb-html</field>
-        <field name="report_name">ab_travel_umroh.report_cetak_invoice</field>
+        <field name="report_name">ab_travel_umroh.account_move</field>
         <field name="report_file">ab_travel_umroh.report_cetak_invoice</field>
         <field name="print_report_name">'Delivery - %s' % (object.name)</field>
         <field name="binding_model_id" ref="model_account_move"/>

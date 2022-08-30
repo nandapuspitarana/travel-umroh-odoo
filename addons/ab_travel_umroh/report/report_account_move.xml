@@ -1,135 +1,190 @@
 <odoo>
 
 
-  <template id="body_cetak_invoice">
-    <div class="page">
-      <div style="font-size:23px;font-weight:bold;text-align:center;margin-bottom:20px;">CUSTOMER INVOICE</div>
-      <div class="d-flex justify-content-center">
-        <table class="table table-bordered" style="width:50%;margin:10px;">
-          <tbody>
-            <tr>
-              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">Customer</td>
-              <td style="width:75%;padding:5px;">
-                <t t-esc="o.partner_id.name"/>
-              </td>
-            </tr>
-            <tr>
-              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">Address</td>
-              <td style="width:75%;padding:5px;">
-                <t t-esc="o.partner_id.city"/>
-              </td>
-            </tr>
-            <tr>
-              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">Mobile</td>
-              <td style="width:75%;padding:5px;">
-                <t t-esc="o.partner_id.mobile"/>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <table class="table table-bordered" style="width:50%;margin:10px;">
-          <tbody>
-            <tr>
-              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">No</td>
-              <td style="width:75%;padding:5px;">
-                <t t-esc="o.payment_reference"/>
-              </td>
-            </tr>
-            <tr>
-              <td style="width:25%; background-color:#28A27E; padding:5px;color:white;font-weight: bold;">Tanggal</td>
-              <td style="width:75%;padding:5px;">
-                <t t-if="o.invoice_date">
-                  <t t-esc="o.invoice_date.strftime('%d %B %Y')"/>
-                </t>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <table class="table table-bordered mt-4">
-        <thead style="background-color:#28A27E;color:white;font-weight: bold;font-weight: bold;">
-          <tr>
-            <td class="text-center">Product</td>
-            <td class="text-center">Qty</td>
-            <td class="text-center">Price Unit</td>
-            <td class="text-center">Subtotal</td>
-          </tr>
-        </thead>
-        <tbody>
-          <t t-foreach="o.invoice_line_ids" t-as="move">
-            <tr>
-              <td class="text-center">
-                <t t-esc="move.product_id.name"/>
-              </td>
-              <td class="text-right">
-                <t t-esc="move.quantity"/>
-              </td>
-              <td class="text-right">
-                <t t-esc="move.price_unit"/>
-              </td>
-              <td class="text-right">
-                <t t-esc="move.price_subtotal"/>
-              </td>
-            </tr>
-          </t>
-          <tr>
-            <td colspan="3" style="text-align:right;font-weight:bold;">Total</td>
-            <td style="text-align:right;font-weight:bold;">
-              <t t-esc="o.amount_total"/>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="table table-bordered mt-4">
-        <thead style="background-color:#28A27E;color:white;font-weight: bold;font-weight: bold;">
-          <tr>
-            <td class="text-center">Method</td>
-            <td class="text-center">Tanggal</td>
-            <td class="text-center">Amount</td>
-          </tr>
-        </thead>
-        <tbody>
-          <t t-foreach="o.get_widget()" t-as="pay">
-            <tr style="height: 18px;">
-              <td style="width: 33.3333%; text-align: center; height: 18px;">
-                <span t-esc="pay['journal_name']"/>
-              </td>
-              <td style="width: 33.3333%; text-align: center; height: 18px;">
-                <span t-esc="time.strftime('%d %B %Y',time.strptime(pay['date'],'%Y-%m-%d'))"/>
-              </td>
-              <td style="width: 33.3333%; height: 18px; text-align: right;">
-                <span t-esc="pay['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-              </td>
-            </tr>
-          </t>
-          <tr>
-            <td colspan="2" style="text-align:right;font-weight:bold;">Sisa</td>
-            <td style="text-align:right;font-weight:bold;">
-              <t t-esc="o.amount_residual"/>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div style="border:2px solid black;width:34%;margin-left:33%">
-        <div style="margin-bottom:150px;text-align:center;">Finance</div>
-      </div>
-    </div>
-  </template>
-
-  <!-- Report Template - Session -->
-
-  <template id="report_cetak_invoice">
-    <t t-call="web.html_container">
+  <template id="account_move">
+    <t t-call="web.basic_layout">
       <t t-foreach="docs" t-as="o">
-        <div t-if="report_type == 'html'">
-          <div>
-            <t t-call="ab_travel_umroh.body_cetak_invoice"/>
-          </div>
-        </div>
-        <div t-else="">
-          <t t-call="web.external_layout">
-            <t t-call="ab_travel_umroh.body_cetak_invoice"/>
-          </t>
+        <div class="page">
+          <p style="text-align: center;">
+            <strong>Customer Invoice</strong>
+          </p>
+
+          <!-- Membuat Report Invoice Sendiri -->
+          <table class="table table-bordered" style="border-collapse: collapse; width: 100%; height: 54px;" border="1">
+            <tbody>
+              <tr style="height: 18px;">
+                <td style="width: 25%; height: 18px;">
+                  <strong>Customer</strong>
+                </td>
+                <td style="width: 25%; height: 18px;">
+                  <t t-esc="o.partner_id.name"/>
+                </td>
+                <td style="width: 25%; height: 18px;">
+                  <strong>No</strong>
+                </td>
+                <td style="width: 25%; height: 18px;">
+                  <t t-esc="o.name"/>
+                </td>
+              </tr>
+              <tr style="height: 18px;">
+                <td style="width: 25%; height: 18px;">
+                  <strong>Address</strong>
+                </td>
+                <td style="width: 25%; height: 18px;">
+                  <t t-esc="o.partner_id.city"/>
+                </td>
+                <td style="width: 25%; height: 18px;">
+                  <strong>Tanggal</strong>
+                </td>
+                <t t-if="o.invoice_date">
+                  <td style="width: 25%; height: 18px;">
+                    <t t-esc="o.invoice_date.strftime('%d %B %Y')"/>
+                  </td>
+                </t>
+              </tr>
+              <tr style="height: 18px;">
+                <td style="width: 25%; height: 18px;">
+                  <strong>Mobile</strong>
+                </td>
+                <td style="width: 25%; height: 18px;">
+                  <t t-esc="o.partner_id.mobile"/>
+                </td>
+                <td style="width: 25%; height: 18px;"></td>
+                <td style="width: 25%; height: 18px;"></td>
+              </tr>
+            </tbody>
+          </table>
+          <p></p>
+          <table class="table table-bordered" style="border-collapse: collapse; width: 100%; height: 36px;" border="1">
+            <tbody>
+              <tr style="height: 18px;">
+                <td style="width: 25%; text-align: center; height: 18px;">
+                  <strong>Product</strong>
+                </td>
+                <td style="width: 25%; text-align: center; height: 18px;">
+                  <strong>QTY</strong>
+                </td>
+                <td style="width: 25%; text-align: center; height: 18px;">
+                  <strong>Paket Unit</strong>
+                </td>
+                <td style="width: 25%; text-align: center; height: 18px;">
+                  <strong>Subtotal</strong>
+                </td>
+              </tr>
+              <t t-set="lines" t-value="o.invoice_line_ids"/>
+              <t t-foreach="lines" t-as="line">
+                <tr style="height: 18px;">
+                  <t t-if="not line.display_type">
+                    <td style="width: 25%; text-align: center; height: 18px;">
+                      <t t-esc="line.product_id.name"/>
+                    </td>
+                    <td style="width: 25%; text-align: center; height: 18px;">
+                      <span t-field="line.quantity"/>
+                    </td>
+                    <td style="width: 25%; text-align: center; height: 18px;">
+                      <span t-field="line.price_unit"/>
+                    </td>
+                    <td style="width: 25%; text-align: center; height: 18px;">
+                      <span class="text-nowrap" t-field="line.price_subtotal"/>
+                    </td>
+                  </t>
+                </tr>
+              </t>
+              <tr>
+                <td style="width: 25%; text-align: center;"></td>
+                <td style="width: 25%; text-align: center;"></td>
+                <td style="width: 25%; text-align: center;">
+                  <strong>Total</strong>
+                </td>
+                <td style="width: 25%; text-align: center;">
+                  <span t-field="o.amount_total"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p></p>
+          <table class="table table-bordered" style="border-collapse: collapse; width: 100%; height: 72px;" border="1">
+            <tbody>
+              <tr style="height: 18px;">
+                <td style="width: 33.3333%; text-align: center; height: 18px;" colspan="3">
+                  <strong>PAYMENT</strong>
+                </td>
+              </tr>
+              <tr style="height: 18px;">
+                <td style="width: 33.3333%; text-align: center; height: 18px;">
+                  <strong>Method</strong>
+                </td>
+                <td style="width: 33.3333%; text-align: center; height: 18px;">
+                  <strong>Tanggal</strong>
+                </td>
+                <td style="width: 33.3333%; text-align: center; height: 18px;">
+                  <strong>Amount</strong>
+                </td>
+              </tr>
+              <t t-foreach="o.get_widget()" t-as="pay">
+                <tr style="height: 18px;">
+                  <td style="width: 33.3333%; text-align: center; height: 18px;">
+                    <span t-esc="pay['journal_name']"/>
+                  </td>
+                  <td style="width: 33.3333%; text-align: center; height: 18px;">
+                    <span t-esc="time.strftime('%d %B %Y',time.strptime(pay['date'],'%Y-%m-%d'))"/>
+                  </td>
+                  <td style="width: 33.3333%; height: 18px; text-align: right;">
+                    <span t-esc="pay['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                  </td>
+                </tr>
+              </t>
+              <tr style="height: 18px;">
+                <td style="width: 33.3333%; text-align: right; height: 18px;" colspan="2">
+                  <strong>Sisa</strong>
+                </td>
+                <td style="width: 33.3333%; text-align: right; height: 18px;">
+                  <span t-field="o.amount_residual"/>
+                </td>
+              </tr>
+
+              <!-- <t t-if="o.payment_state != 'invoicing_legacy'">
+                                <t t-set="payments" t-value="o.sudo()._get_reconciled_info_JSON_values()"/>
+                                <t t-foreach="payments" t-as="pay">
+                                    <tr style="height: 18px;">
+                                        <td style="width: 33.3333%; text-align: center; height: 18px;">
+                                            <span t-esc="pay['journal_name']"/>
+                                        </td>
+                                        <td style="width: 33.3333%; text-align: center; height: 18px;">
+                                            <span t-esc="pay['date'].strftime('%d %B %Y')"/>
+                                        </td>
+                                        <td style="width: 33.3333%; height: 18px; text-align: right;">
+                                            <span t-esc="pay['amount']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr style="height: 18px;">
+                                    <td style="width: 33.3333%; text-align: right; height: 18px;" colspan="2">
+                                        <strong>Sisa</strong>
+                                    </td>
+                                    <td style="width: 33.3333%; text-align: right; height: 18px;">
+                                        <span t-field="o.amount_residual"/>
+                                    </td>
+                                </tr>
+                            </t> -->
+            </tbody>
+          </table>
+          <table class="table table-bordered" style="width: 78.5567%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+            <tbody>
+              <tr>
+                <td style="width: 100%;">
+                  <p style="text-align: center;">
+                    <strong>Finance</strong>
+                  </p>
+                  <p></p>
+                  <p></p>
+                  <p style="text-align: center; position: relative; top: 25px;">
+                    <t t-esc="o.partner_id.name"/>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </t>
     </t>
